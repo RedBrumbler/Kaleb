@@ -44,7 +44,7 @@ jobs:
         with:
           workflow_token: ${{ secrets.GITHUB_TOKEN }}
           restore: true
-          cache: true
+          cache: false
           publish: false
 
       - name: Setup qpm for release
@@ -53,7 +53,7 @@ jobs:
         with:
           workflow_token: ${{ secrets.GITHUB_TOKEN }}
           restore: true
-          cache: true
+          cache: false
           publish: true
           publish_token: ${{ secrets.QPM_KEY }}
           version: ${{ steps.version.outputs.VERSION }}
