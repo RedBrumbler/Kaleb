@@ -123,6 +123,7 @@ function(add_assets assets_binary kind assets_folder assets_file)
     if (NOT ANY)
         message(STATUS "No assets found to include")
     endif()
+
     add_library(${assets_binary} ${kind} ${compiled_assets})
     set_target_properties(${assets_binary} PROPERTIES LINKER_LANGUAGE CXX)
 
