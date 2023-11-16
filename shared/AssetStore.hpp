@@ -12,6 +12,6 @@ namespace Kaleb {
             AssetRegistrator(std::string_view identifier, const Asset* asset) {
                 assets.emplace(std::string(identifier.substr(sizeof("Assets::"))), asset);
             }
-        }
+        };
     };
 }

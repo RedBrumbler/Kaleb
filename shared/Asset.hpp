@@ -1,7 +1,13 @@
 #pragma once
 
 #include "KalebInfo.hpp"
+#include <span>
+#include <string_view>
+
+#if __has_include("beatsaber-hook/shared/utils/typedefs.h")
 #include "beatsaber-hook/shared/utils/typedefs.h"
+#define KALEB_QUEST
+#endif
 
 namespace Kaleb {
     struct Asset {
@@ -12,12 +18,31 @@ namespace Kaleb {
             arrayEnd(end),
             actual_length(arrayEnd - arrayStart),
             data_length(dataEnd - dataStart) {
-                array->klass = nullptr;
-                array->monitor = nullptr;
-                array->bounds = nullptr;
-                array->max_length = data_length;
+#ifdef KALEB_QUEST
+                reinterpret_cast<Array<uint8_t*>*>(arrayStart)->klass = nullptr;
+                reinterpret_cast<Array<uint8_t*>*>(arrayStart)->monitor = nullptr;
+                reinterpret_cast<Array<uint8_t*>*>(arrayStart)->bounds = nullptr;
+                reinterpret_cast<Array<uint8_t*>*>(arrayStart)->max_length = data_length;
+#endif
             }
 
+        operator std::span<uint8_t>() {
+            return std::span(dataStart, dataEnd);
+        }
+
+        operator std::string_view() {
+            return { reinterpret_cast<const char*>(dataStart), data_length };
+        }
+
+        uint8_t* const arrayStart;
+        uint8_t* const dataStart;
+        uint8_t* const dataEnd;
+        uint8_t* const arrayEnd;
+
+        std::size_t const actual_length;
+        std::size_t const data_length;
+
+#ifdef KALEB_QUEST
         operator ArrayW<uint8_t>() {
             init();
             return ArrayW<uint8_t>(arrayStart);
@@ -25,29 +50,13 @@ namespace Kaleb {
 
         operator Array<uint8_t>* () {
             init();
-            return static_cast<Array<uint8_t>*>(arrayStart);
+            return reinterpret_cast<Array<uint8_t>*>(arrayStart);
         }
-
-        operator std::span<uint8_t>() {
-            return std::span(dataStart, dataEnd);
-        }
-
-        operator std::string_view() {
-            return { static_cast<const char*>(dataStart), data_length };
-        }
-
-        void* const arrayStart;
-        void* const dataStart;
-        void* const dataEnd;
-        void* const arrayEnd;
-
-        std::size_t const actual_length;
-        std::size_t const data_length;
-
         private:
             void init() {
-                if (!static_cast<Array<uint8_t>*>(arrayStart)->klass)
-                    static_cast<Array<uint8_t>*>(arrayStart)->klass = classof(Array<uint8_t>*);
+                if (!reinterpret_cast<Array<uint8_t>*>(arrayStart)->klass)
+                    reinterpret_cast<Array<uint8_t>*>(arrayStart)->klass = classof(Array<uint8_t>*);
             }
+#endif
     };
 }
