@@ -77,6 +77,12 @@ jobs:
           qpm_release_bin: false
           qpm_debug_bin: false
 
+      - name: Commit qpm json
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          git add qpm.json --allow-empty
+          git commit -m "Add version define" --allow-empty
+
       - name: build
         run: pwsh ./scripts/build.ps1
 
