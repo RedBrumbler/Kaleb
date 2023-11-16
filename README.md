@@ -1,0 +1,2 @@
+# Quest Asset Include Lib
+QAIlib, or better known as kaleb, is a set of tools to include assets into your mods via a seperate .so file that gets compiled alongside your mod. You can then link against those symbols at compile time and access the backing data in different ways, and mods can even access this across different versions.
