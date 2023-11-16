@@ -108,7 +108,7 @@ endfunction()
 function(add_assets assets_binary kind assets_folder assets_file)
     file(GLOB_RECURSE assets LIST_DIRECTORIES false "${assets_folder}/*")
 
-    list(LENGTH ${assets} result)
+    list(LENGTH "${assets}" result)
     if (${result} GREATER 0)
         message(STATUS "Found ${result} assets to include")
     else()
