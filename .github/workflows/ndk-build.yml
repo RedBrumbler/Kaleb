@@ -51,12 +51,7 @@ jobs:
                 cppFlags:[ "-DKALEB_VERSION=\"${{ steps.version.outputs.VERSION }}\""]
               };
 
-              await fs.writeFile("qpm.json", JSON.stringify(qpm, null, 4), function (err) {
-                if (err) {
-                  return console.error(err);
-                }
-                console.log("file saved!");
-              });
+              fs.writeFileSync("qpm.json", JSON.stringify(qpm, null, 4));
             });
 
       - name: Setup qpm
