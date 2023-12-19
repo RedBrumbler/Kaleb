@@ -101,16 +101,6 @@ function(asset_declare namespace identifier declare_o)
     endif()
 endfunction()
 
-function(asset_file assets_file asset_declares)
-    file(REMOVE ${assets_file}) # refresh
-    file(APPEND ${assets_file} "#pragma once\n")
-    file(APPEND ${assets_file} "#include \"kaleb/shared/kaleb.hpp\"\n\n")
-
-    foreach(decl IN LISTS asset_declares)
-        file(APPEND ${assets_file} "${decl};\n")
-    endforeach()
-endfunction()
-
 function(add_assets assets_binary kind assets_folder assets_file)
     file(GLOB_RECURSE assets LIST_DIRECTORIES false "${assets_folder}/*")
 
@@ -133,5 +123,9 @@ function(add_assets assets_binary kind assets_folder assets_file)
     add_library(${assets_binary} ${kind} ${compiled_assets})
     set_target_properties(${assets_binary} PROPERTIES LINKER_LANGUAGE CXX)
 
-    asset_file("${assets_file}" "${asset_declares}")
+    # we add the include file as a target so that it doesn't continuously regenerates
+
+    string(MAKE_C_IDENTIFIER "${assets_file}" assets_file_target)
+    add_custom_target(${assets_binary}-include-file COMMAND ${CMAKE_COMMAND} -DASSETS_FILE="${assets_file}" -DASSET_DECLARES="${asset_declares}" -P ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/create_include.cmake)
+    add_dependencies(${assets_binary}-include-file ${assets_binary})
 endfunction()
