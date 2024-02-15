@@ -13,5 +13,5 @@ namespace namespaze {                                                           
     extern "C" uint8_t _binary_id##_start[];                                    \
     extern "C" uint8_t _binary_id##_end[];                                      \
     static inline ::Kaleb::Asset name {_binary_id##_start, _binary_id##_end};   \
-    ASSET_REGISTRATOR(namesapaze, name);                                        \
+    ASSET_REGISTRATOR(namespaze, name);                                        \
 }
