@@ -30,11 +30,11 @@ namespace Kaleb {
                 *dataEnd = '\0';
             }
 
-        operator std::span<uint8_t>() {
+        operator std::span<uint8_t>() const {
             return std::span(dataStart, dataEnd);
         }
 
-        operator std::string_view() {
+        operator std::string_view() const {
             return { reinterpret_cast<const char*>(dataStart), data_length };
         }
 
@@ -49,12 +49,12 @@ namespace Kaleb {
         std::size_t const data_length;
 
 #ifdef KALEB_QUEST
-        operator ArrayW<uint8_t>() {
+        operator ArrayW<uint8_t>() const {
             init();
             return ArrayW<uint8_t>(arrayStart);
         }
 
-        operator Array<uint8_t>* () {
+        operator Array<uint8_t>* () const {
             init();
             return reinterpret_cast<Array<uint8_t>*>(arrayStart);
         }
