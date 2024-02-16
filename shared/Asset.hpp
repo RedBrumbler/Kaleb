@@ -59,7 +59,7 @@ namespace Kaleb {
             return reinterpret_cast<Array<uint8_t>*>(arrayStart);
         }
         private:
-            void init() {
+            void init() const {
                 if (!reinterpret_cast<Array<uint8_t>*>(arrayStart)->klass)
                     reinterpret_cast<Array<uint8_t>*>(arrayStart)->klass = classof(Array<uint8_t>*);
             }
